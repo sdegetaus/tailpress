@@ -1,20 +1,20 @@
-<?php tailpress()->get_header(); ?>
+<?php TailPress::instance()->get_header(); ?>
 
-	<div class="container my-8 mx-auto">
+<div class="container my-8 mx-auto">
 
-	<?php if ( have_posts() ) : ?>
+	<?php if (have_posts()) : ?>
 
 		<?php
-		while ( have_posts() ) :
+		while (have_posts()) :
 			the_post();
-			?>
+		?>
 
-			<?php tailpress()->get_template_part( 'template-parts/content', 'single' ); ?>
+			<?php TailPress::instance()->get_template_part('template-parts/content', 'single'); ?>
 
 			<?php
 			// If comments are open or we have at least one comment, load up the comment template.
-			if ( comments_open() || get_comments_number() ) :
-				tailpress()->comments_template();
+			if (comments_open() || get_comments_number()) :
+				TailPress::instance()->comments_template();
 			endif;
 			?>
 
@@ -22,7 +22,7 @@
 
 	<?php endif; ?>
 
-	</div>
+</div>
 
 <?php
-tailpress()->get_footer();
+TailPress::instance()->get_footer();

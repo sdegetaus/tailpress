@@ -1,6 +1,7 @@
 <?php
 
-class TailPress {
+class TailPress
+{
 	/**
 	 * @var null
 	 */
@@ -11,20 +12,24 @@ class TailPress {
 	 *
 	 * @return TailPress
 	 */
-	public static function instance() {
-		if ( ! isset( self::$instance ) && ! ( self::$instance instanceof TailPress ) ) {
+	public static function instance()
+	{
+		if (!isset(self::$instance) && !(self::$instance instanceof TailPress)) {
 			self::$instance = new TailPress();
 		}
-
 		return self::$instance;
 	}
 
 	/**
 	 * TailPress constructor.
 	 */
-	private function __construct() {
-		foreach ( $this->get_template_types() as $type ) {
-			add_filter( "{$type}_template_hierarchy", array( $this, 'append_templates' ) );
+	private function __construct()
+	{
+		foreach ($this->get_template_types() as $type) {
+			add_filter("{$type}_template_hierarchy", [
+				$this,
+				'append_templates',
+			]);
 		}
 	}
 
@@ -34,8 +39,11 @@ class TailPress {
 	 * @param  string  $file
 	 * @param  bool  $separate_comments
 	 */
-	public static function comments_template( $file = '/theme/comments.php', $separate_comments = false ) {
-		comments_template( $file, $separate_comments );
+	public static function comments_template(
+		$file = '/theme/comments.php',
+		$separate_comments = false
+	) {
+		comments_template($file, $separate_comments);
 	}
 
 	/**
@@ -44,19 +52,20 @@ class TailPress {
 	 * @param  null  $name
 	 * @param  array  $args
 	 */
-	public static function get_header( $name = null, $args = array() ) {
-		do_action( 'get_header', $name, $args );
+	public static function get_header($name = null, $args = [])
+	{
+		do_action('get_header', $name, $args);
 
-		$templates = array();
-		$name      = (string) $name;
-		if ( '' !== $name ) {
+		$templates = [];
+		$name = (string) $name;
+		if ('' !== $name) {
 			$templates[] = "theme/header-{$name}.php";
 		}
 
 		$templates[] = 'theme/header.php';
 
-		if ( ! locate_template( $templates, true, true, $args ) ) {
-			get_header( $name, $args );
+		if (!locate_template($templates, true, true, $args)) {
+			get_header($name, $args);
 		}
 	}
 
@@ -66,19 +75,20 @@ class TailPress {
 	 * @param  null  $name
 	 * @param  array  $args
 	 */
-	public static function get_footer( $name = null, $args = array() ) {
-		do_action( 'get_footer', $name, $args );
+	public static function get_footer($name = null, $args = [])
+	{
+		do_action('get_footer', $name, $args);
 
-		$templates = array();
-		$name      = (string) $name;
-		if ( '' !== $name ) {
+		$templates = [];
+		$name = (string) $name;
+		if ('' !== $name) {
 			$templates[] = "theme/footer-{$name}.php";
 		}
 
 		$templates[] = 'theme/footer.php';
 
-		if ( ! locate_template( $templates, true, true, $args ) ) {
-			get_footer( $name, $args );
+		if (!locate_template($templates, true, true, $args)) {
+			get_footer($name, $args);
 		}
 	}
 
@@ -89,9 +99,10 @@ class TailPress {
 	 * @param  null  $name
 	 * @param  array  $args
 	 */
-	public static function get_template_part( $slug, $name = null, $args = array() ) {
-		if ( ! get_template_part( "theme/$slug", $name, $args ) ) {
-			get_template_part( $slug, $name, $args );
+	public static function get_template_part($slug, $name = null, $args = [])
+	{
+		if (!get_template_part("theme/$slug", $name, $args)) {
+			get_template_part($slug, $name, $args);
 		}
 	}
 
@@ -102,12 +113,13 @@ class TailPress {
 	 *
 	 * @return array
 	 */
-	public function append_templates( $templates ) {
-		$tailpress_templates = array_map( function ( $template ) {
-			return "theme/" . $template;
-		}, $templates );
+	public function append_templates($templates)
+	{
+		$tailpress_templates = array_map(function ($template) {
+			return 'theme/' . $template;
+		}, $templates);
 
-		return array_merge( $tailpress_templates, $templates );
+		return array_merge($tailpress_templates, $templates);
 	}
 
 	/**
@@ -117,8 +129,9 @@ class TailPress {
 	 *
 	 * @return string[]
 	 */
-	public function get_template_types() {
-		return array(
+	public function get_template_types()
+	{
+		return [
 			'404',
 			'archive',
 			'attachment',
@@ -136,8 +149,8 @@ class TailPress {
 			'single',
 			'singular',
 			'tag',
-			'taxonomy'
-		);
+			'taxonomy',
+		];
 	}
 
 	/**
@@ -147,18 +160,21 @@ class TailPress {
 	 *
 	 * @return string
 	 */
-	public static function mix( $path ) {
-		$path                = '/' . $path;
-		$stylesheet_dir_uri  = get_stylesheet_directory_uri();
+	public static function mix($path)
+	{
+		$path = '/' . $path;
+		$stylesheet_dir_uri = get_stylesheet_directory_uri();
 		$stylesheet_dir_path = get_stylesheet_directory();
 
-		if ( ! file_exists( $stylesheet_dir_path . '/mix-manifest.json' ) ) {
+		if (!file_exists($stylesheet_dir_path . '/mix-manifest.json')) {
 			return $stylesheet_dir_uri . $path;
 		}
 
-		$mix_file_path = file_get_contents( $stylesheet_dir_path . '/mix-manifest.json' );
-		$manifest      = json_decode( $mix_file_path, true );
-		$asset_path    = ! empty( $manifest[ $path ] ) ? $manifest[ $path ] : $path;
+		$mix_file_path = file_get_contents(
+			$stylesheet_dir_path . '/mix-manifest.json'
+		);
+		$manifest = json_decode($mix_file_path, true);
+		$asset_path = !empty($manifest[$path]) ? $manifest[$path] : $path;
 
 		return $stylesheet_dir_uri . $asset_path;
 	}

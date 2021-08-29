@@ -1,14 +1,14 @@
-<?php tailpress()->get_header(); ?>
+<?php TailPress::instance()->get_header(); ?>
 
 <div class="container mx-auto my-8">
 
-	<?php if ( have_posts() ) : ?>
+	<?php if (have_posts()) : ?>
 		<?php
-		while ( have_posts() ) :
+		while (have_posts()) :
 			the_post();
-			?>
+		?>
 
-			<?php tailpress()->get_template_part( 'template-parts/content', get_post_format() ); ?>
+			<?php TailPress::instance()->get_template_part('template-parts/content', get_post_format()); ?>
 
 		<?php endwhile; ?>
 
@@ -17,4 +17,4 @@
 </div>
 
 <?php
-tailpress()->get_footer();
+TailPress::instance()->get_footer();
