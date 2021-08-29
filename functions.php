@@ -20,3 +20,12 @@ if (!defined('BB_INCLUDES_PATH')) {
 // Includes
 require BB_INCLUDES_PATH . 'class-tailpress.php';
 require BB_INCLUDES_PATH . 'tailpress-functions.php';
+
+/**
+ * HTML Head
+ */
+add_action('wp_head', function () {
+?>
+	<meta name="theme-color" content="#FF0000">
+<?php
+});

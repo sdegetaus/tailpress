@@ -1,8 +1,7 @@
 <?php
 
-/**
- * Original `functions.php` from the TailPress theme.
- * 
+/*
+ * Original `functions.php` from the TailPress theme. 
  */
 
 if (!defined('ABSPATH')) {
